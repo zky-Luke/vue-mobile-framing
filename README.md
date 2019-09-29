@@ -25,9 +25,6 @@ yarn build:test | npm run build:test
 yarn lint | npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
 ### Technology stack
 1. 使用style-resources-loader全局注册less
 2. 使用vuex
@@ -36,7 +33,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 5. 优雅使用icons
 6. 全局捕获错误、路由守卫
 7. 安装amfe-flexible及postcss-pxtorem自适应
-8. 添加测试testing、预生产presentation、生产production环境
+8. 添加调试环境development、测试test、生产production环境
 9. axios二次封装
 10. 页面切换动画animation
 11. Web 存储storage封装
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
