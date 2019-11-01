@@ -11,10 +11,11 @@ module.exports = {
   productionSourceMap: true,
 
   devServer: {
-    port: 8090, // 端口号
+    port: 8099, // 端口号
     host: "localhost", // 'localhost'
     https: false, // https:{type:Boolean}
     open: true, //配置自动启动浏览器
+    clientLogLevel: "warning", // 浏览器eslint提示
     // 配置跨域处理,只有一个代理
     proxy: {
       "/api": {

@@ -7,7 +7,7 @@
     "build": "vue-cli-service build --mode production",
     "build:test": "vue-cli-service build --mode test",
     "build:prod": "vue-cli-service build --mode production",
-    "lint": "vue-cli-service lint"
+    "lint": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
     "amfe-flexible": "^2.2.1",
