@@ -52,7 +52,7 @@ module.exports = {
       patterns: [path.resolve(__dirname, "./src/styles/index.less")] // 全局引入less
     }
   },
-  lintOnSave: true,
+  lintOnSave: false,
   css: {
     loaderOptions: {
       postcss: {

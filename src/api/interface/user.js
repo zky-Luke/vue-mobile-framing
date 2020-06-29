@@ -9,17 +9,7 @@ export const query = params => {
   });
 };
 
-// 测试
-export const test = params => {
-  return axios({
-    url: "/test",
-    method: "get",
-    params
-  });
-};
-
 // 默认全部倒出
 export default {
-  query,
-  test
+  query
 };

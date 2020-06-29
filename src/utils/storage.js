@@ -47,7 +47,7 @@ class Store {
     if (!this._store) return;
     let kType = this.getType(_k);
     if (kType === "string") {
-      res = this._store.removeItem(_k);
+      this._store.removeItem(_k);
     } else {
       console.log("key只能为字符串！");
     }
@@ -94,14 +94,14 @@ class LocalStorage extends Store {
   constructor (store) { // eslint-disable-line
     super(store);
   }
-  WX_USER_ID = "WX_USER_ID";
+  WX_USER_INFO = "WX_USER_INFO"; // 微信用户信息
 }
 
 class SessionStorage extends Store {
   constructor (store) { // eslint-disable-line
     super(store);
   }
-  WX_SSO_TITLE = "WX_SSO_TITLE";
+  WX_CODE = "WX_CODE"; // 微信code
 }
 
 const lStorage = new LocalStorage(window.localStorage || localStorage);

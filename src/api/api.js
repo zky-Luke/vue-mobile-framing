@@ -1,19 +1,37 @@
 import axios from "axios"; // 注意先安装哦
 import config from "./config.js"; // 倒入默认配置
 import qs from "qs"; // 序列化请求数据，视服务端的要求
+import { Toast } from "vant";
 // import router from '../router/index'
+import store from "@/store/index.js";
+const interfaceConfig = require("./interfaceConfig.json");
 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
-      baseURL: config.baseURL,
-      headers: {}
+      baseURL: options.baseURL || config.baseURL,
+      headers: options.headers || config.headers,
+      method: options.method || "post"
       // transformResponse: [function(data) {}]
     });
+
+    // 获取等待框配置
+    let length =
+      options.url.indexOf("?") === -1
+        ? options.url.length
+        : options.url.indexOf("?");
+    let key = options.url.substring(0, length);
+    const { noShowLoading } = interfaceConfig[key] || {};
 
     // request 拦截器
     instance.interceptors.request.use(
       config => {
+
+        if (options.noShowLoading || noShowLoading) {
+        } else {
+          // 显示加载框
+          store.dispatch("showLoading");
+        }
         // Tip: 1
         // 请求开始的时候可以结合 vuex 开启全屏的 loading 动画
 
@@ -28,9 +46,9 @@ export default function $axios(options) {
         // Tip: 3
         // 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (
-          config.method.toLocaleLowerCase() === "post" ||
-          config.method.toLocaleLowerCase() === "put" ||
-          config.method.toLocaleLowerCase() === "delete"
+          options.headers &&
+          options.headers["Content-Type"] ===
+          "application/x-www-form-urlencoded"
         ) {
           config.data = qs.stringify(config.data);
         }
@@ -69,6 +87,13 @@ export default function $axios(options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
+
+        // 清除加载框
+        if (options.noShowLoading || noShowLoading) {
+        } else {
+          store.dispatch("hideLoading");
+        }
+
         let data;
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         if (response.data === undefined) {
@@ -92,6 +117,10 @@ export default function $axios(options) {
         return data;
       },
       err => {
+        console.log("err", err.response);
+        // 清除加载框
+        store.dispatch("hideLoading");
+
         if (err && err.response) {
           switch (err.response.status) {
             case 400:
@@ -140,6 +169,15 @@ export default function $axios(options) {
 
             default:
           }
+          Toast({
+            message: err.message,
+            position: "bottom"
+          });
+        } else {
+          Toast({
+            message: "网络错误",
+            position: "bottom"
+          });
         }
         console.error(err);
         // 此处我使用的是 element UI 的提示组件
